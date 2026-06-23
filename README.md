@@ -37,11 +37,12 @@ cd issue-tracker
 ```bash
 composer install
 npm install
+npm run build
 ```
 
 3. Copy the env file and generate app key
 ```bash
-cp .env.example .env
+copy .env.example .env
 php artisan key:generate
 ```
 
@@ -83,6 +84,6 @@ After seeding you can login with:
 
 **Comments** — loaded via AJAX with pagination, add and edit comments without page reload
 
-**Search** — live search on issues with 400ms debounce
+**Search & Filters** — two filtering approaches: dropdown filters (status, priority, tag) apply on button click, and a live text search that filters instantly with 400ms debounce as you type
 
 **Auth** — register, login, logout via Laravel Breeze
