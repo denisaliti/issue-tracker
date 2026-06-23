@@ -1,58 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Issue Tracker
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A mini issue tracker built with Laravel 13, where teams can manage projects, issues, tags, and comments.
 
-## About Laravel
+I built this as a technical task — it took me a full night but I learned a lot from it.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## What it does
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Create and manage projects with start dates and deadlines
+- Add issues to projects with status (open, in progress, closed), priority (low, medium, high), due dates and assigned team members
+- Filter issues by status, priority, or tag
+- Search issues by title or description (with debounce)
+- Attach tags to issues via AJAX without page reload
+- Add, edit and delete comments on issues via AJAX
+- Register and login with authentication
+- Only the project creator can edit or delete their project (authorization policy)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+- Laravel 13
+- PHP 8.5
+- MySQL
+- Blade templates
+- Bootstrap 5
+- JavaScript / AJAX
+- Laravel Breeze (authentication)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## How to run it locally
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
+1. Clone the repo
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone https://github.com/denisaliti/issue-tracker.git
+cd issue-tracker
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. Install dependencies
+```bash
+composer install
+npm install
+```
 
-## Contributing
+3. Copy the env file and generate app key
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Set up your database in `.env`
 
-## Code of Conduct
+DB_DATABASE=issue_tracker
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+DB_USERNAME=root
 
-## Security Vulnerabilities
+DB_PASSWORD=
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. Run migrations and seed demo data
+```bash
+php artisan migrate --seed
+```
 
-## License
+6. Start the server
+```bash
+php artisan serve
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Demo accounts
+
+After seeding you can login with:
+
+| Email | Password |
+|-------|----------|
+| admin@test.com | password |
+| john@test.com | password |
+| jane@test.com | password |
+
+## Features breakdown
+
+**Projects** — full CRUD, only the owner can edit or delete their project
+
+**Issues** — full CRUD with filters by status, priority and tag. Assign team members when creating an issue
+
+**Tags** — create tags with custom colors, attach and detach from issues via AJAX modal
+
+**Comments** — loaded via AJAX with pagination, add and edit comments without page reload
+
+**Search** — live search on issues with 400ms debounce
+
+**Auth** — register, login, logout via Laravel Breeze
