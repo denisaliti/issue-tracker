@@ -69,9 +69,9 @@ After seeding you can login with:
 
 | Email | Password |
 |-------|----------|
-| admin@test.com | password |
-| john@test.com | password |
-| jane@test.com | password |
+| denis@test.com | password |
+| manager@test.com | password |
+| test@test.com | password |
 
 ## Features breakdown
 
