@@ -25,7 +25,11 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <form method="GET" class="row g-2">
+        <div class="mb-3">
+            <input type="text" id="search" class="form-control" placeholder="Search issues by title or description..." value="{{ request('search') }}">
+        </div>
+        <form method="GET" id="filter-form" class="row g-2">
+            <input type="hidden" name="search" id="search-input">
             <div class="col-md-3">
                 <select name="status" class="form-select">
                     <option value="">All Statuses</option>
@@ -57,6 +61,7 @@
     </div>
 </div>
 
+<div id="issues-results">
 @if($issues->isEmpty())
     <div class="alert alert-info">No issues found.</div>
 @else
@@ -68,6 +73,7 @@
                     <th>Status</th>
                     <th>Priority</th>
                     <th>Tags</th>
+                    <th>Assigned To</th>
                     <th>Due Date</th>
                     <th>Actions</th>
                 </tr>
@@ -81,6 +87,11 @@
                     <td>
                         @foreach($issue->tags as $tag)
                             <span class="badge" style="background-color: {{ $tag->color ?? '#6c757d' }}">{{ $tag->name }}</span>
+                        @endforeach
+                    </td>
+                    <td>
+                        @foreach($issue->users as $user)
+                            <span class="badge bg-secondary">{{ $user->name }}</span>
                         @endforeach
                     </td>
                     <td>{{ $issue->due_date ?? '-' }}</td>
@@ -97,4 +108,26 @@
         </table>
     </div>
 @endif
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    let debounceTimer;
+    const projectId = {{ $project->id }};
+
+    document.getElementById('search').addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const search = this.value;
+            fetch(`/projects/${projectId}/issues?search=${encodeURIComponent(search)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('issues-results').innerHTML = data.html;
+            });
+        }, 400);
+    });
+</script>
 @endsection

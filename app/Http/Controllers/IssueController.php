@@ -14,7 +14,7 @@ class IssueController extends Controller
     public function index(Project $project)
     {
     $issues = $project->issues()
-        ->with('tags')
+        ->with('tags', 'users')
         ->when(request('status'), fn($q) => $q->where('status', request('status')))
         ->when(request('priority'), fn($q) => $q->where('priority', request('priority')))
         ->when(request('tag'), fn($q) => $q->whereHas('tags', fn($q) => $q->where('tags.id', request('tag'))))
